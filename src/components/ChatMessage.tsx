@@ -2,8 +2,6 @@ import { Bot, User, Copy, Check } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 interface ChatMessageProps {
   role: "user" | "assistant";
@@ -47,21 +45,35 @@ export const ChatMessage = ({ role, content }: ChatMessageProps) => {
               <ReactMarkdown
                 components={{
                   code({ node, inline, className, children, ...props }: any) {
-                    const match = /language-(\w+)/.exec(className || "");
-                    return !inline && match ? (
-                      <SyntaxHighlighter
-                        style={vscDarkPlus}
-                        language={match[1]}
-                        PreTag="div"
-                        {...props}
-                      >
-                        {String(children).replace(/\n$/, "")}
-                      </SyntaxHighlighter>
-                    ) : (
-                      <code className="bg-muted px-1.5 py-0.5 rounded text-sm" {...props}>
+                    return inline ? (
+                      <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono" {...props}>
                         {children}
                       </code>
+                    ) : (
+                      <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
+                        <code className="text-sm font-mono" {...props}>
+                          {children}
+                        </code>
+                      </pre>
                     );
+                  },
+                  p({ children }) {
+                    return <p className="mb-4 last:mb-0">{children}</p>;
+                  },
+                  ul({ children }) {
+                    return <ul className="list-disc list-inside mb-4 space-y-1">{children}</ul>;
+                  },
+                  ol({ children }) {
+                    return <ol className="list-decimal list-inside mb-4 space-y-1">{children}</ol>;
+                  },
+                  h1({ children }) {
+                    return <h1 className="text-2xl font-bold mb-4">{children}</h1>;
+                  },
+                  h2({ children }) {
+                    return <h2 className="text-xl font-bold mb-3">{children}</h2>;
+                  },
+                  h3({ children }) {
+                    return <h3 className="text-lg font-bold mb-2">{children}</h3>;
                   },
                 }}
               >
