@@ -1,9 +1,16 @@
 import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
 import { useChat } from "@/hooks/useChat";
-import { Sparkles, Trash2 } from "lucide-react";
+import { Sparkles, Trash2, Menu } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Index = () => {
   const { messages, isLoading, sendMessage, clearChat } = useChat();
@@ -34,17 +41,35 @@ const Index = () => {
             </div>
           </div>
           
-          {messages.length > 0 && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={clearChat}
-              className="gap-2"
-            >
-              <Trash2 className="w-4 h-4" />
-              Clear Chat
-            </Button>
-          )}
+          <div className="flex items-center gap-2">
+            {messages.length > 0 && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={clearChat}
+                className="gap-2"
+              >
+                <Trash2 className="w-4 h-4" />
+                Clear Chat
+              </Button>
+            )}
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <Menu className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link to="/about">About</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/how-to-use">How to Use</Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
       </header>
 

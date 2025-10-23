@@ -19,29 +19,30 @@ export const ChatMessage = ({ role, content }: ChatMessageProps) => {
   };
 
   return (
-    <div className={`flex gap-4 py-6 ${isUser ? "justify-end" : ""}`}>
-      {!isUser && (
-        <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-          <Bot className="w-5 h-5 text-primary" />
-        </div>
-      )}
-      
-      <div className={`flex-1 space-y-2 ${isUser ? "max-w-[80%]" : ""}`}>
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-semibold text-foreground">
-            {isUser ? "You" : "AI Assistant"}
-          </span>
-        </div>
+    <div className={`flex gap-3 py-8 px-4 hover:bg-muted/30 transition-colors ${isUser ? "bg-background" : "bg-muted/20"}`}>
+      <div className="max-w-4xl mx-auto w-full flex gap-6">
+        {!isUser && (
+          <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-md">
+            <Bot className="w-5 h-5 text-primary-foreground" />
+          </div>
+        )}
         
-        <div className={`rounded-2xl px-4 py-3 ${
-          isUser 
-            ? "bg-primary text-primary-foreground ml-auto" 
-            : "bg-card border border-border"
-        }`}>
+        <div className={`flex-1 space-y-3 ${isUser ? "ml-10" : ""}`}>
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-semibold text-foreground">
+              {isUser ? "You" : "AI Assistant"}
+            </span>
+          </div>
+          
+          <div className={`${
+            isUser 
+              ? "text-foreground" 
+              : "text-foreground"
+          }`}>
           {isUser ? (
-            <p className="text-sm leading-relaxed whitespace-pre-wrap">{content}</p>
+            <p className="leading-relaxed whitespace-pre-wrap">{content}</p>
           ) : (
-            <div className="prose prose-invert prose-sm max-w-none">
+            <div className="prose prose-sm max-w-none dark:prose-invert">
               <ReactMarkdown
                 components={{
                   code({ node, inline, className, children, ...props }: any) {
@@ -84,32 +85,35 @@ export const ChatMessage = ({ role, content }: ChatMessageProps) => {
         </div>
         
         {!isUser && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleCopy}
-            className="h-8 text-xs text-muted-foreground hover:text-foreground"
-          >
-            {copied ? (
-              <>
-                <Check className="w-3 h-3 mr-1" />
-                Copied!
-              </>
-            ) : (
-              <>
-                <Copy className="w-3 h-3 mr-1" />
-                Copy
-              </>
-            )}
-          </Button>
+          <div className="flex gap-2 mt-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleCopy}
+              className="h-7 text-xs text-muted-foreground hover:text-foreground hover:bg-muted"
+            >
+              {copied ? (
+                <>
+                  <Check className="w-3 h-3 mr-1" />
+                  Copied!
+                </>
+              ) : (
+                <>
+                  <Copy className="w-3 h-3 mr-1" />
+                  Copy
+                </>
+              )}
+            </Button>
+          </div>
+        )}
+        </div>
+
+        {isUser && (
+          <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-md">
+            <User className="w-5 h-5 text-primary-foreground" />
+          </div>
         )}
       </div>
-
-      {isUser && (
-        <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-          <User className="w-5 h-5 text-primary-foreground" />
-        </div>
-      )}
     </div>
   );
 };
