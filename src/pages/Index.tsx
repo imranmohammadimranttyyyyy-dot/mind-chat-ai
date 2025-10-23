@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
+import { AdSpace } from "@/components/AdSpace";
 import { useChat } from "@/hooks/useChat";
 import { Sparkles, Trash2, Menu } from "lucide-react";
 import {
@@ -27,37 +28,37 @@ const Index = () => {
   return (
     <div className="flex flex-col h-screen bg-background">
       {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-lg">
-              <Sparkles className="w-6 h-6 text-primary-foreground" />
+      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-4xl mx-auto px-2 sm:px-4 py-3 sm:py-4 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-lg">
+              <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+              <h1 className="text-base sm:text-xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                 AI Chat Assistant
               </h1>
-              <p className="text-xs text-muted-foreground">Advanced Intelligence • Real-time Responses</p>
+              <p className="text-[10px] sm:text-xs text-muted-foreground hidden sm:block">Advanced Intelligence • Real-time Responses</p>
             </div>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
             {messages.length > 0 && (
               <Button
                 variant="outline"
                 size="sm"
                 onClick={clearChat}
-                className="gap-2"
+                className="gap-1 sm:gap-2 px-2 sm:px-3"
               >
-                <Trash2 className="w-4 h-4" />
-                Clear Chat
+                <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span className="hidden sm:inline">Clear Chat</span>
               </Button>
             )}
             
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <Menu className="w-4 h-4" />
+                <Button variant="outline" size="sm" className="px-2 sm:px-3">
+                  <Menu className="w-3 h-3 sm:w-4 sm:h-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -73,9 +74,12 @@ const Index = () => {
         </div>
       </header>
 
+      {/* Top Banner Ad */}
+      <AdSpace slot="top-banner" format="horizontal" className="max-w-4xl mx-auto w-full" />
+
       {/* Messages */}
-      <main className="flex-1 overflow-y-auto">
-        <div className="max-w-4xl mx-auto px-4">
+      <main className="flex-1 overflow-y-auto pb-4">
+        <div className="max-w-4xl mx-auto px-2 sm:px-4">
           {messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full py-20">
               <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-6 shadow-xl">
@@ -134,11 +138,17 @@ const Index = () => {
           ) : (
             <div className="divide-y divide-border">
               {messages.map((message, index) => (
-                <ChatMessage
-                  key={index}
-                  role={message.role}
-                  content={message.content}
-                />
+                <>
+                  <ChatMessage
+                    key={index}
+                    role={message.role}
+                    content={message.content}
+                  />
+                  {/* Ad after every 3 messages */}
+                  {(index + 1) % 3 === 0 && index !== messages.length - 1 && (
+                    <AdSpace slot={`inline-ad-${Math.floor(index / 3)}`} format="auto" />
+                  )}
+                </>
               ))}
               {isLoading && messages[messages.length - 1]?.role === "user" && (
                 <div className="flex gap-4 py-6">
@@ -160,6 +170,9 @@ const Index = () => {
           )}
         </div>
       </main>
+
+      {/* Bottom Ad before input */}
+      <AdSpace slot="bottom-banner" format="horizontal" className="max-w-4xl mx-auto w-full" />
 
       {/* Input */}
       <ChatInput onSend={sendMessage} disabled={isLoading} />

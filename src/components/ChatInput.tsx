@@ -26,20 +26,20 @@ export const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
   };
 
   return (
-    <div className="border-t border-border bg-card/50 backdrop-blur-sm p-4">
-      <div className="max-w-4xl mx-auto flex gap-3">
+    <div className="border-t border-border bg-card/50 backdrop-blur-sm p-2 sm:p-4 sticky bottom-0">
+      <div className="max-w-4xl mx-auto flex gap-2 sm:gap-3">
         <Textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Type your message... (Shift+Enter for new line)"
-          className="min-h-[60px] max-h-[200px] resize-none bg-background border-border"
+          placeholder="Type your message..."
+          className="min-h-[50px] sm:min-h-[60px] max-h-[200px] resize-none bg-background border-border text-sm sm:text-base"
           disabled={disabled}
         />
         <Button
           onClick={handleSend}
           disabled={disabled || !input.trim()}
-          className="h-[60px] px-6 bg-primary hover:bg-primary/90"
+          className="h-[50px] sm:h-[60px] px-3 sm:px-6 bg-primary hover:bg-primary/90 flex-shrink-0"
         >
           {disabled ? (
             <Loader2 className="w-5 h-5 animate-spin" />
@@ -48,8 +48,8 @@ export const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
           )}
         </Button>
       </div>
-      <p className="text-xs text-muted-foreground text-center mt-2">
-        Powered by advanced AI • Press Enter to send, Shift+Enter for new line
+      <p className="text-[10px] sm:text-xs text-muted-foreground text-center mt-1 sm:mt-2">
+        Powered by advanced AI • <span className="hidden sm:inline">Press Enter to send, Shift+Enter for new line</span>
       </p>
     </div>
   );
