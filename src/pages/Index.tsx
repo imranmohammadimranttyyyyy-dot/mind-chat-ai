@@ -1,11 +1,11 @@
-import { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
-import { AdSpace } from "@/components/AdSpace";
 import { useChat } from "@/hooks/useChat";
-import { Sparkles, Trash2, Menu } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { Sparkles, Trash2, Menu, LogOut } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +16,30 @@ import {
 const Index = () => {
   const { messages, isLoading, sendMessage, clearChat } = useChat();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [user, setUser] = useState<any>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if user is logged in
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!session) {
+        navigate("/auth");
+      } else {
+        setUser(session.user);
+      }
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!session) {
+        navigate("/auth");
+      } else {
+        setUser(session.user);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -24,6 +48,15 @@ const Index = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/auth");
+  };
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <div className="flex flex-col h-screen bg-background">
@@ -68,14 +101,15 @@ const Index = () => {
                 <DropdownMenuItem asChild>
                   <Link to="/how-to-use">How to Use</Link>
                 </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout} className="text-destructive">
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Logout
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
         </div>
       </header>
-
-      {/* Top Banner Ad */}
-      <AdSpace slot="top-banner" format="horizontal" className="max-w-4xl mx-auto w-full" />
 
       {/* Messages */}
       <main className="flex-1 overflow-y-auto pb-4">
@@ -138,17 +172,11 @@ const Index = () => {
           ) : (
             <div className="divide-y divide-border">
               {messages.map((message, index) => (
-                <>
-                  <ChatMessage
-                    key={index}
-                    role={message.role}
-                    content={message.content}
-                  />
-                  {/* Ad after every 3 messages */}
-                  {(index + 1) % 3 === 0 && index !== messages.length - 1 && (
-                    <AdSpace slot={`inline-ad-${Math.floor(index / 3)}`} format="auto" />
-                  )}
-                </>
+                <ChatMessage
+                  key={index}
+                  role={message.role}
+                  content={message.content}
+                />
               ))}
               {isLoading && messages[messages.length - 1]?.role === "user" && (
                 <div className="flex gap-4 py-6">
@@ -170,9 +198,6 @@ const Index = () => {
           )}
         </div>
       </main>
-
-      {/* Bottom Ad before input */}
-      <AdSpace slot="bottom-banner" format="horizontal" className="max-w-4xl mx-auto w-full" />
 
       {/* Input */}
       <ChatInput onSend={sendMessage} disabled={isLoading} />
