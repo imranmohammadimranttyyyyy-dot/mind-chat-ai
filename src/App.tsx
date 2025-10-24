@@ -105,3 +105,13 @@ const App: React.FC = () => {
 };
 
 export default App;
+import Chat from "./pages/Chat";
+
+<Routes>
+  <Route path="/" element={<Index />} />
+  <Route path="/auth" element={<Auth />} />
+  <Route path="/about" element={<About />} />
+  <Route path="/how-to-use" element={<HowToUse />} />
+  <Route path="/chat" element={<Chat />} />
+  <Route path="*" element={<NotFound />} />
+</Routes>
