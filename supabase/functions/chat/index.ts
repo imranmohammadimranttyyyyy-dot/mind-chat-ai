@@ -136,3 +136,17 @@ Your goal is to be genuinely helpful, insightful, and valuable in every interact
     );
   }
 });
+function getBotResponse(userInput) {
+  userInput = userInput.toLowerCase();
+
+  if (userInput.includes("tumhe kisne banaya") || userInput.includes("who made you")) {
+    return "Mujhe Imran ne banaya hai 💻";
+  } else if (userInput.includes("hello") || userInput.includes("hi")) {
+    return "Hello! Kaise ho?";
+  } else {
+    return "Mujhe samajh nahi aaya, kya aap repeat karenge?";
+  }
+}
+
+// Example:
+console.log(getBotResponse("tumhe kisne banaya"));
