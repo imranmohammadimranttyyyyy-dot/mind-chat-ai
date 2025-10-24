@@ -124,7 +124,7 @@ const Index = () => {
               </h2>
               <p className="text-muted-foreground text-center max-w-md mb-8">
                 Your intelligent assistant is ready to help with anything. Ask questions, get advice, 
-                brainstorm ideas, or just have a conversation.
+                brainstorm ideas, generate images, or just have a conversation.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-2xl">
                 <Button
@@ -150,11 +150,11 @@ const Index = () => {
                 <Button
                   variant="outline"
                   className="h-auto p-4 justify-start text-left"
-                  onClick={() => sendMessage("Write a creative story about a robot learning emotions")}
+                  onClick={() => sendMessage("Generate an image of a futuristic city at sunset with flying cars")}
                 >
                   <div className="flex-1">
-                    <div className="font-semibold mb-1">Creative writing</div>
-                    <div className="text-xs text-muted-foreground">Generate stories and content</div>
+                    <div className="font-semibold mb-1">Generate Images</div>
+                    <div className="text-xs text-muted-foreground">Create stunning AI-generated visuals</div>
                   </div>
                 </Button>
                 <Button
@@ -176,6 +176,7 @@ const Index = () => {
                   key={index}
                   role={message.role}
                   content={message.content}
+                  imageUrl={message.imageUrl}
                 />
               ))}
               {isLoading && messages[messages.length - 1]?.role === "user" && (

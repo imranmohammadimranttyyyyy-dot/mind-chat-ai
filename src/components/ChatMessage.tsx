@@ -6,9 +6,10 @@ import ReactMarkdown from "react-markdown";
 interface ChatMessageProps {
   role: "user" | "assistant";
   content: string;
+  imageUrl?: string;
 }
 
-export const ChatMessage = ({ role, content }: ChatMessageProps) => {
+export const ChatMessage = ({ role, content, imageUrl }: ChatMessageProps) => {
   const [copied, setCopied] = useState(false);
   const isUser = role === "user";
 
@@ -42,45 +43,56 @@ export const ChatMessage = ({ role, content }: ChatMessageProps) => {
           {isUser ? (
             <p className="leading-relaxed whitespace-pre-wrap">{content}</p>
           ) : (
-            <div className="prose prose-sm max-w-none dark:prose-invert">
-              <ReactMarkdown
-                components={{
-                  code({ node, inline, className, children, ...props }: any) {
-                    return inline ? (
-                      <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono" {...props}>
-                        {children}
-                      </code>
-                    ) : (
-                      <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
-                        <code className="text-sm font-mono" {...props}>
+            <>
+              {imageUrl && (
+                <div className="mb-4">
+                  <img 
+                    src={imageUrl} 
+                    alt="Generated image" 
+                    className="rounded-lg shadow-lg max-w-full h-auto border border-border"
+                  />
+                </div>
+              )}
+              <div className="prose prose-sm max-w-none dark:prose-invert">
+                <ReactMarkdown
+                  components={{
+                    code({ node, inline, className, children, ...props }: any) {
+                      return inline ? (
+                        <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono" {...props}>
                           {children}
                         </code>
-                      </pre>
-                    );
-                  },
-                  p({ children }) {
-                    return <p className="mb-4 last:mb-0">{children}</p>;
-                  },
-                  ul({ children }) {
-                    return <ul className="list-disc list-inside mb-4 space-y-1">{children}</ul>;
-                  },
-                  ol({ children }) {
-                    return <ol className="list-decimal list-inside mb-4 space-y-1">{children}</ol>;
-                  },
-                  h1({ children }) {
-                    return <h1 className="text-2xl font-bold mb-4">{children}</h1>;
-                  },
-                  h2({ children }) {
-                    return <h2 className="text-xl font-bold mb-3">{children}</h2>;
-                  },
-                  h3({ children }) {
-                    return <h3 className="text-lg font-bold mb-2">{children}</h3>;
-                  },
-                }}
-              >
-                {content}
-              </ReactMarkdown>
-            </div>
+                      ) : (
+                        <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
+                          <code className="text-sm font-mono" {...props}>
+                            {children}
+                          </code>
+                        </pre>
+                      );
+                    },
+                    p({ children }) {
+                      return <p className="mb-4 last:mb-0">{children}</p>;
+                    },
+                    ul({ children }) {
+                      return <ul className="list-disc list-inside mb-4 space-y-1">{children}</ul>;
+                    },
+                    ol({ children }) {
+                      return <ol className="list-decimal list-inside mb-4 space-y-1">{children}</ol>;
+                    },
+                    h1({ children }) {
+                      return <h1 className="text-2xl font-bold mb-4">{children}</h1>;
+                    },
+                    h2({ children }) {
+                      return <h2 className="text-xl font-bold mb-3">{children}</h2>;
+                    },
+                    h3({ children }) {
+                      return <h3 className="text-lg font-bold mb-2">{children}</h3>;
+                    },
+                  }}
+                >
+                  {content}
+                </ReactMarkdown>
+              </div>
+            </>
           )}
         </div>
         
