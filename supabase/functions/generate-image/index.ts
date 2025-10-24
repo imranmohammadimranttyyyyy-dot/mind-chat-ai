@@ -79,15 +79,24 @@ serve(async (req) => {
     }
 
     const data = await response.json();
-    console.log("Image generation response received");
+    console.log("Image generation response:", JSON.stringify(data, null, 2));
     
-    const imageUrl = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
-    const text = data.choices?.[0]?.message?.content;
+    // Extract image URL from the response
+    let imageUrl: string | undefined;
+    const message = data.choices?.[0]?.message;
+    
+    if (message?.images && Array.isArray(message.images) && message.images.length > 0) {
+      imageUrl = message.images[0]?.image_url?.url;
+    }
+    
+    const text = message?.content || "Image generated successfully!";
+
+    console.log("Extracted imageUrl:", imageUrl);
 
     if (!imageUrl) {
-      console.error("No image URL in response");
+      console.error("No image URL in response. Full response:", JSON.stringify(data));
       return new Response(
-        JSON.stringify({ error: "Failed to generate image" }), 
+        JSON.stringify({ error: "Failed to generate image. Please try again." }), 
         {
           status: 500,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
