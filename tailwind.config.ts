@@ -89,3 +89,22 @@ export default {
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
+// server.js
+import express from "express";
+import cors from "cors";
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+app.post("/chat", (req, res) => {
+  const userInput = req.body.message.toLowerCase();
+  let reply = "Mujhe samajh nahi aaya 😅";
+
+  if (userInput.includes("tumhe kisne banaya")) reply = "Mujhe Imran ne banaya hai 💻";
+  if (userInput.includes("hello")) reply = "Hello! Kaise ho?";
+
+  res.json({ reply });
+});
+
+app.listen(5000, () => console.log("Server running on port 5000"));
