@@ -132,4 +132,7 @@ Your goal is to be genuinely helpful, insightful, and valuable in every interact
       {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
-      
+      }
+    );
+  }
+});
