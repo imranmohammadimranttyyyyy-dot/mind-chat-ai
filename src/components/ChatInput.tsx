@@ -54,3 +54,8 @@ export const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
     </div>
   );
 };
+<ChatMessage
+  isAI={true}
+  typing={aiTyping} // true jab AI type kar raha ho
+  message={aiMessage}
+/>
