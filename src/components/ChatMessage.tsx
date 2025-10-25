@@ -150,3 +150,4 @@ import ThinkingDots from "./ThinkingDots";
   typing={aiTyping} // true ho to dots dikhenge
   message={aiMessage}
 />
+import ThinkingDots from "./ThinkingDots";
