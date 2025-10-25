@@ -145,3 +145,8 @@ import ThinkingDots from "./ThinkingDots";
 <div className="chat-message">
   {typing && isAI ? <ThinkingDots /> : <p>{message}</p>}
 </div>
+<ChatMessage
+  isAI={true}       // ye bata raha hai ye AI message hai
+  typing={aiTyping} // true ho to dots dikhenge
+  message={aiMessage}
+/>
