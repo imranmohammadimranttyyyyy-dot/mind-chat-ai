@@ -57,5 +57,5 @@ export const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
 <ChatMessage
   isAI={true}
   typing={aiTyping} // true jab AI type kar raha ho
-  message={aiMessage}
+  message={wait from seconds}
 />
