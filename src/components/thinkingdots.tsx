@@ -12,3 +12,17 @@ const ThinkingDots: React.FC = () => {
 };
 
 export default ThinkingDots;
+import React from "react";
+import "./ThinkingDots.css"; // CSS file same folder me
+
+const ThinkingDots = () => {
+  return (
+    <div className="thinking-dots">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  );
+};
+
+export default ThinkingDots;
