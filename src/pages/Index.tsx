@@ -1,22 +1,18 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
 import { useChat } from "@/hooks/useChat";
 import { supabase } from "@/integrations/supabase/client";
-import { Sparkles, Trash2, Menu, LogOut } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Sparkles, Menu } from "lucide-react";
+import { Sidebar } from "@/components/Sidebar";
 
 const Index = () => {
   const { messages, isLoading, sendMessage, clearChat } = useChat();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [user, setUser] = useState<any>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,71 +45,44 @@ const Index = () => {
     scrollToBottom();
   }, [messages]);
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate("/auth");
-  };
-
   if (!user) {
     return null;
   }
 
   return (
-    <div className="flex flex-col h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-4xl mx-auto px-2 sm:px-4 py-3 sm:py-4 flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-lg">
-              <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-primary-foreground" />
-            </div>
-            <div>
-              <h1 className="text-base sm:text-xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                AI Chat Assistant
-              </h1>
-              <p className="text-[10px] sm:text-xs text-muted-foreground hidden sm:block">Advanced Intelligence • Real-time Responses</p>
-            </div>
-          </div>
-          
-          <div className="flex items-center gap-1 sm:gap-2">
-            {messages.length > 0 && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={clearChat}
-                className="gap-1 sm:gap-2 px-2 sm:px-3"
-              >
-                <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
-                <span className="hidden sm:inline">Clear Chat</span>
-              </Button>
-            )}
-            
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="px-2 sm:px-3">
-                  <Menu className="w-3 h-3 sm:w-4 sm:h-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem asChild>
-                  <Link to="/about">About</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/how-to-use">How to Use</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleLogout} className="text-destructive">
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </div>
-      </header>
+    <div className="flex w-full min-h-screen bg-background">
+      {/* Sidebar */}
+      <Sidebar
+        onNewChat={clearChat}
+        isOpen={sidebarOpen}
+        onToggle={() => setSidebarOpen(!sidebarOpen)}
+      />
 
-      {/* Messages */}
-      <main className="flex-1 overflow-y-auto pb-4">
-        <div className="max-w-4xl mx-auto px-2 sm:px-4">
+      {/* Main Content */}
+      <div className="flex flex-col flex-1 h-screen">
+        {/* Mobile Header */}
+        <header className="lg:hidden border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-30">
+          <div className="px-4 py-3 flex items-center justify-between">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+            >
+              <Menu className="w-5 h-5" />
+            </Button>
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center">
+                <Sparkles className="w-5 h-5 text-primary-foreground" />
+              </div>
+              <span className="font-bold text-foreground">AI Chat</span>
+            </div>
+            <div className="w-10" /> {/* Spacer for centering */}
+          </div>
+        </header>
+
+        {/* Messages */}
+        <main className="flex-1 overflow-y-auto pb-4">
+          <div className="max-w-4xl mx-auto px-4 lg:px-8">
           {messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full py-20">
               <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-6 shadow-xl">
@@ -197,11 +166,12 @@ const Index = () => {
               <div ref={messagesEndRef} />
             </div>
           )}
-        </div>
-      </main>
+          </div>
+        </main>
 
-      {/* Input */}
-      <ChatInput onSend={sendMessage} disabled={isLoading} />
+        {/* Input */}
+        <ChatInput onSend={sendMessage} disabled={isLoading} />
+      </div>
     </div>
   );
 };
