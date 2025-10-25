@@ -148,5 +148,5 @@ import ThinkingDots from "./ThinkingDots";
 <ChatMessage
   isAI={true}       // ye bata raha hai ye AI message hai
   typing={aiTyping} // true ho to dots dikhenge
-  message={aiMessage}
+  message={aitying}
 />
