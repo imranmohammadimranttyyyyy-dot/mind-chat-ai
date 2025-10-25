@@ -142,3 +142,6 @@ const ChatMessage: React.FC<{ isAI?: boolean; message?: string; typing?: boolean
 
 export default ChatMessage;
 import ThinkingDots from "./ThinkingDots";
+<div className="chat-message">
+  {typing && isAI ? <ThinkingDots /> : <p>{message}</p>}
+</div>
