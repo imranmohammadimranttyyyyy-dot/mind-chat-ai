@@ -129,3 +129,15 @@ export const ChatMessage = ({ role, content, imageUrl }: ChatMessageProps) => {
     </div>
   );
 };
+import React from "react";
+import ThinkingDots from "./ThinkingDots";
+
+const ChatMessage: React.FC<{ isAI?: boolean; message?: string; typing?: boolean }> = ({ isAI, message, typing }) => {
+  return (
+    <div className={`chat-message ${isAI ? "ai" : "user"}`}>
+      {typing && isAI ? <ThinkingDots /> : <p>{message}</p>}
+    </div>
+  );
+};
+
+export default ChatMessage;
