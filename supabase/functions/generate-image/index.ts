@@ -9,7 +9,7 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { prompt } = await req.json();
+    const { prompt, enhancePrompt = true } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     
     if (!LOVABLE_API_KEY) {
@@ -26,7 +26,13 @@ serve(async (req) => {
       );
     }
 
-    console.log("Generating image with prompt:", prompt);
+    // Enhance the prompt for better image quality
+    let enhancedPrompt = prompt;
+    if (enhancePrompt) {
+      enhancedPrompt = `Create a high-quality, detailed, professional image: ${prompt}. Style: photorealistic with excellent lighting, composition, and clarity. Ultra high resolution, 8K quality, cinematic lighting, professional photography.`;
+    }
+
+    console.log("Generating image with enhanced prompt:", enhancedPrompt);
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -39,7 +45,7 @@ serve(async (req) => {
         messages: [
           {
             role: "user",
-            content: prompt
+            content: enhancedPrompt
           }
         ],
         modalities: ["image", "text"]

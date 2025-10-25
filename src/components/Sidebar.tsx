@@ -42,6 +42,7 @@ export function Sidebar({ onNewChat, isOpen, onToggle }: SidebarProps) {
 
   const navItems = [
     { icon: Home, label: "Chat", path: "/" },
+    { icon: Sparkles, label: "Image Generator", path: "/image-gen" },
     { icon: Info, label: "About", path: "/about" },
     { icon: HelpCircle, label: "How to Use", path: "/how-to-use" },
     { icon: Settings, label: "Settings", path: "/settings" },
