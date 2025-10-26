@@ -1,5 +1,5 @@
 import React from "react";
-import "./ThinkingDots.css";
+import "./thinkingdots.css";
 
 const ThinkingDots: React.FC = () => {
   return (
