@@ -157,9 +157,6 @@ const Index = () => {
                     </div>
                     <div className="flex-1 space-y-3">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold text-foreground">AI Assistant</span>
-                      </div>
-                      <div className="flex items-center gap-2">
                         <span className="text-sm text-muted-foreground">Thinking</span>
                         <ThinkingDots />
                       </div>
