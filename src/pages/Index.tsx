@@ -7,6 +7,7 @@ import { useChat } from "@/hooks/useChat";
 import { supabase } from "@/integrations/supabase/client";
 import { Sparkles, Menu } from "lucide-react";
 import { Sidebar } from "@/components/Sidebar";
+import ThinkingDots from "@/components/thinkingdots";
 
 const Index = () => {
   const { messages, isLoading, sendMessage, clearChat } = useChat();
@@ -149,16 +150,16 @@ const Index = () => {
                 />
               ))}
               {isLoading && messages[messages.length - 1]?.role === "user" && (
-                <div className="flex gap-4 py-6">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Sparkles className="w-5 h-5 text-primary animate-pulse" />
-                  </div>
-                  <div className="flex-1 space-y-2">
-                    <span className="text-sm font-semibold text-foreground">AI Assistant</span>
-                    <div className="flex gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                      <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                      <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                <div className="flex gap-3 py-8 px-4 bg-muted/20">
+                  <div className="max-w-4xl mx-auto w-full flex gap-6">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-md">
+                      <Sparkles className="w-5 h-5 text-primary-foreground" />
+                    </div>
+                    <div className="flex-1 space-y-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold text-foreground">AI Assistant</span>
+                      </div>
+                      <ThinkingDots />
                     </div>
                   </div>
                 </div>
