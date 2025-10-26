@@ -159,7 +159,10 @@ const Index = () => {
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-semibold text-foreground">AI Assistant</span>
                       </div>
-                      <ThinkingDots />
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-muted-foreground">Thinking</span>
+                        <ThinkingDots />
+                      </div>
                     </div>
                   </div>
                 </div>
