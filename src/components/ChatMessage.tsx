@@ -29,13 +29,11 @@ export const ChatMessage = ({ role, content, imageUrl }: ChatMessageProps) => {
         )}
         
         <div className={`flex-1 space-y-3 ${isUser ? "ml-10" : ""}`}>
-          {isUser && (
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-semibold text-foreground">
-                You
-              </span>
-            </div>
-          )}
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-semibold text-foreground">
+              {isUser ? "You" : "Thinking"}
+            </span>
+          </div>
           
           <div className={`${
             isUser 
