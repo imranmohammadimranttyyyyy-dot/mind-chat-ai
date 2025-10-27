@@ -2,7 +2,7 @@
 
 ## Project info
 
-**URL**:**httpschat.netlify.app**
+**URL**:**https://lovable.dev/projects/3aff87b4-0134-453f-b08d-67ee60aa613b**
 
 ## How can I edit this code? 
 **Loveable.ai and own code GitHub**
@@ -62,7 +62,7 @@ npm run dev
 
 ## How can I deploy this project?
 
-**Simply open [chat.ai](httpschat.netlify.app) and click on Share -> Publish.**
+**Simply open [chat.ai](https://lovable.dev/projects/3aff87b4-0134-453f-b08d-67ee60aa613b) and click on Share -> Publish.**
 
 ## Can I connect a custom domain to my chat.ai **
 
@@ -70,4 +70,4 @@ npm run dev
 
 **To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.**
 
-**Read more here: [Setting up a custom domain](httpschat.netlify.app)**
+**Read more here: [Setting up a custom domain](https://lovable.dev/projects/3aff87b4-0134-453f-b08d-67ee60aa613b)**
