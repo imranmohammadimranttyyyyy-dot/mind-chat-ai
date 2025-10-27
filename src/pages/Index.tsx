@@ -4,16 +4,21 @@ import { Button } from "@/components/ui/button";
 import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
 import { useChat } from "@/hooks/useChat";
+import { useTextToSpeech } from "@/hooks/useTextToSpeech";
 import { supabase } from "@/integrations/supabase/client";
 import { Sparkles, Menu } from "lucide-react";
 import { Sidebar } from "@/components/Sidebar";
+import { VoiceToggle } from "@/components/VoiceToggle";
 import ThinkingDots from "@/components/thinkingdots";
 
 const Index = () => {
   const { messages, isLoading, sendMessage, clearChat } = useChat();
+  const { speak, stop, isSpeaking } = useTextToSpeech();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [user, setUser] = useState<any>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [voiceEnabled, setVoiceEnabled] = useState(false);
+  const lastMessageRef = useRef<string>("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,7 +49,23 @@ const Index = () => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+    
+    // Auto-play AI responses if voice is enabled
+    if (voiceEnabled && messages.length > 0) {
+      const lastMessage = messages[messages.length - 1];
+      
+      // Only speak assistant messages that haven't been spoken yet
+      if (
+        lastMessage.role === "assistant" && 
+        lastMessage.content && 
+        lastMessage.content !== lastMessageRef.current &&
+        !isLoading
+      ) {
+        lastMessageRef.current = lastMessage.content;
+        speak(lastMessage.content);
+      }
+    }
+  }, [messages, voiceEnabled, isLoading, speak]);
 
   if (!user) {
     return null;
@@ -77,7 +98,13 @@ const Index = () => {
               </div>
               <span className="font-bold text-foreground">AI Chat</span>
             </div>
-            <div className="w-10" /> {/* Spacer for centering */}
+            <VoiceToggle 
+              enabled={voiceEnabled}
+              onToggle={() => {
+                if (isSpeaking) stop();
+                setVoiceEnabled(!voiceEnabled);
+              }}
+            />
           </div>
         </header>
 
