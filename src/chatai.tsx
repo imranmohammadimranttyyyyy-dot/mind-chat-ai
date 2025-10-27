@@ -64,3 +64,4 @@ const Chat: React.FC = () => {
 };
 
 export default Chat;
+import { startVoiceConversation, speakText } from "../integrations/voice";
