@@ -64,3 +64,10 @@ const Chat: React.FC = () => {
 };
 
 export default Chat;
+import { startVoiceConversation, speakText } from "../integrations/voice";
+startVoiceConversation(async (userSpeech) => {
+  console.log("User said:", userSpeech);
+  // Send this speech to your AI backend
+  const reply = await sendMessageToAI(userSpeech);
+  speakText(reply); // AI ka jawab awaaz mein
+});
